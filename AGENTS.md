@@ -15,3 +15,5 @@ Convex agent skills for common tasks can be installed by running
 Before finishing a task, run `pnpm lint` and `pnpm typecheck`.
 
 Do not start the dev server; it is already running.
+
+Do not run new builds or commands that can crash the running dev server.
