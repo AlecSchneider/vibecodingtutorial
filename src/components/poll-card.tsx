@@ -250,7 +250,7 @@ function PollOption({
           initial={{ width: 0 }}
           animate={{ width: `${percentage}%` }}
           transition={{ delay: 0.2, duration: 0.8, ease: "easeOut" }}
-          className={`absolute inset-y-0 left-0 ${color} opacity-30`}
+          className={`absolute inset-y-0 left-0 ${color} opacity-60`}
         />
       )}
     </motion.button>
