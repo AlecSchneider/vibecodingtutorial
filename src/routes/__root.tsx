@@ -1,10 +1,12 @@
 import {
   HeadContent,
+  Link,
   Outlet,
   Scripts,
   createRootRouteWithContext,
 } from '@tanstack/react-router'
 import * as React from 'react'
+import { useShooIdentityName } from '../shoo'
 import type { QueryClient } from '@tanstack/react-query'
 import appCss from '~/styles/app.css?url'
 
@@ -52,8 +54,16 @@ export const Route = createRootRouteWithContext<{
 })
 
 function RootComponent() {
+  const viewerName = useShooIdentityName()
+
   return (
     <RootDocument>
+      <Link
+        to="/login"
+        className="fixed top-4 right-4 z-50 max-w-40 truncate rounded-lg bg-muted px-3 py-2 text-xs font-semibold text-card-foreground shadow-lg transition-colors hover:bg-muted/80"
+      >
+        {viewerName ?? 'Log in'}
+      </Link>
       <Outlet />
     </RootDocument>
   )

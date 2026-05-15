@@ -58,7 +58,7 @@ export const create = mutation({
 export const getBySlug = query({
   args: {
     slug: v.string(),
-    userId: v.union(v.string(), v.null()),
+    anonymousUserId: v.union(v.string(), v.null()),
   },
   handler: async (ctx, args) => {
     const poll = await ctx.db
@@ -79,9 +79,10 @@ export const getBySlug = query({
       .withIndex('by_pollId', (q) => q.eq('pollId', poll._id))
       .collect()
     let selectedVote: Doc<'pollVotes'> | null = null
+    const identity = await ctx.auth.getUserIdentity()
+    const userId = identity?.subject ?? args.anonymousUserId
 
-    if (args.userId !== null) {
-      const userId = args.userId
+    if (userId !== null) {
       selectedVote = await ctx.db
         .query('pollVotes')
         .withIndex('by_pollId_and_userId', (q) =>
@@ -108,10 +109,12 @@ export const vote = mutation({
   args: {
     pollId: v.id('polls'),
     optionId: v.id('pollOptions'),
-    userId: v.string(),
+    anonymousUserId: v.string(),
   },
   handler: async (ctx, args) => {
     const option = await ctx.db.get('pollOptions', args.optionId)
+    const identity = await ctx.auth.getUserIdentity()
+    const userId = identity?.subject ?? args.anonymousUserId
 
     if (option === null || option.pollId !== args.pollId) {
       throw new Error('Invalid poll option.')
@@ -120,12 +123,16 @@ export const vote = mutation({
     const existingVote = await ctx.db
       .query('pollVotes')
       .withIndex('by_pollId_and_userId', (q) =>
-        q.eq('pollId', args.pollId).eq('userId', args.userId),
+        q.eq('pollId', args.pollId).eq('userId', userId),
       )
       .unique()
 
     if (existingVote === null) {
-      await ctx.db.insert('pollVotes', args)
+      await ctx.db.insert('pollVotes', {
+        pollId: args.pollId,
+        optionId: args.optionId,
+        userId,
+      })
       return null
     }
 

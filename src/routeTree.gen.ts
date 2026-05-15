@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as NewRouteImport } from './routes/new'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as AnotherPageRouteImport } from './routes/anotherPage'
 import { Route as SlugRouteImport } from './routes/$slug'
 import { Route as IndexRouteImport } from './routes/index'
@@ -17,6 +18,11 @@ import { Route as IndexRouteImport } from './routes/index'
 const NewRoute = NewRouteImport.update({
   id: '/new',
   path: '/new',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AnotherPageRoute = AnotherPageRouteImport.update({
@@ -39,12 +45,14 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$slug': typeof SlugRoute
   '/anotherPage': typeof AnotherPageRoute
+  '/login': typeof LoginRoute
   '/new': typeof NewRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$slug': typeof SlugRoute
   '/anotherPage': typeof AnotherPageRoute
+  '/login': typeof LoginRoute
   '/new': typeof NewRoute
 }
 export interface FileRoutesById {
@@ -52,20 +60,22 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/$slug': typeof SlugRoute
   '/anotherPage': typeof AnotherPageRoute
+  '/login': typeof LoginRoute
   '/new': typeof NewRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/$slug' | '/anotherPage' | '/new'
+  fullPaths: '/' | '/$slug' | '/anotherPage' | '/login' | '/new'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/$slug' | '/anotherPage' | '/new'
-  id: '__root__' | '/' | '/$slug' | '/anotherPage' | '/new'
+  to: '/' | '/$slug' | '/anotherPage' | '/login' | '/new'
+  id: '__root__' | '/' | '/$slug' | '/anotherPage' | '/login' | '/new'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   SlugRoute: typeof SlugRoute
   AnotherPageRoute: typeof AnotherPageRoute
+  LoginRoute: typeof LoginRoute
   NewRoute: typeof NewRoute
 }
 
@@ -76,6 +86,13 @@ declare module '@tanstack/react-router' {
       path: '/new'
       fullPath: '/new'
       preLoaderRoute: typeof NewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/anotherPage': {
@@ -106,6 +123,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   SlugRoute: SlugRoute,
   AnotherPageRoute: AnotherPageRoute,
+  LoginRoute: LoginRoute,
   NewRoute: NewRoute,
 }
 export const routeTree = rootRouteImport

@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { motion } from 'framer-motion'
 import { useState } from 'react'
 import { useAction, useMutation } from 'convex/react'
+import { useIsShooAuthenticated } from '../shoo'
 import { api } from '../../convex/_generated/api'
 import type { FormEvent } from 'react'
 
@@ -18,6 +19,7 @@ function NewPoll() {
   const createPoll = useMutation(api.polls.create)
   const generateAnswers = useAction(api.answerSuggestions.generate)
   const navigate = useNavigate()
+  const isAuthenticated = useIsShooAuthenticated()
   const [question, setQuestion] = useState('')
   const [answers, setAnswers] = useState(initialAnswers)
   const [attemptedSubmit, setAttemptedSubmit] = useState(false)
@@ -26,6 +28,7 @@ function NewPoll() {
     null,
   )
   const [generationError, setGenerationError] = useState<string | null>(null)
+  const [showLoginRequired, setShowLoginRequired] = useState(false)
 
   const filledAnswerCount = answers.filter(
     (answer) => answer.value.trim().length > 0,
@@ -53,6 +56,12 @@ function NewPoll() {
     setGenerationError(null)
 
     if (!hasQuestion) {
+      return
+    }
+
+    if (!isAuthenticated) {
+      setShowLoginRequired(true)
+      window.setTimeout(() => setShowLoginRequired(false), 2200)
       return
     }
 
@@ -104,6 +113,18 @@ function NewPoll() {
         <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-secondary/20 rounded-full blur-3xl" />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-accent/10 rounded-full blur-3xl" />
       </div>
+
+      {showLoginRequired && (
+        <motion.div
+          initial={{ opacity: 0, y: 8, scale: 0.96 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: 8, scale: 0.96 }}
+          transition={{ duration: 0.18 }}
+          className="fixed bottom-6 left-1/2 z-50 w-[calc(100%-3rem)] max-w-sm -translate-x-1/2 rounded-xl border border-red-500 bg-card px-4 py-3 text-center text-sm font-medium text-red-400 shadow-2xl shadow-red-950/30"
+        >
+          Log in to use AI features
+        </motion.div>
+      )}
 
       <div className="relative z-10 w-full sm:w-md sm:min-w-md sm:max-w-md mx-auto">
         <motion.form

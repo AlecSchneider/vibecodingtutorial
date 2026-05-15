@@ -27,7 +27,10 @@ function PollPage() {
   const { slug } = Route.useParams()
   const [userId, setUserId] = useState<string | null>(null)
   const vote = useMutation(api.polls.vote)
-  const poll = useQuery(api.polls.getBySlug, { slug, userId })
+  const poll = useQuery(api.polls.getBySlug, {
+    slug,
+    anonymousUserId: userId,
+  })
 
   useEffect(() => {
     setUserId(getOrCreateUserId())
@@ -59,7 +62,7 @@ function PollPage() {
 
       <Link
         to="/new"
-        className="absolute top-4 right-4 z-20 rounded-lg bg-muted px-3 py-2 text-xs font-semibold text-card-foreground shadow-lg transition-colors hover:bg-muted/80"
+        className="absolute top-4 left-4 z-20 rounded-lg bg-muted px-3 py-2 text-xs font-semibold text-card-foreground shadow-lg transition-colors hover:bg-muted/80"
       >
         Create Poll
       </Link>
@@ -91,7 +94,7 @@ function PollPage() {
             void vote({
               pollId: poll._id,
               optionId: option._id,
-              userId,
+              anonymousUserId: userId,
             })
           }}
         />

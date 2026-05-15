@@ -11,6 +11,9 @@ importers:
       '@convex-dev/react-query':
         specifier: ^0.1.0
         version: 0.1.0(@tanstack/react-query@5.100.10(react@19.2.6))(convex@1.38.0(react@19.2.6))
+      '@shoojs/react':
+        specifier: ^0.2.2
+        version: 0.2.2(react@19.2.6)
       '@tanstack/react-query':
         specifier: ^5.99.0
         version: 5.100.10(react@19.2.6)
@@ -816,6 +819,17 @@ packages:
 
   '@rolldown/pluginutils@1.0.1':
     resolution: {integrity: sha512-2j9bGt5Jh8hj+vPtgzPtl72j0yRxHAyumoo6TNfAjsLB04UtpSvPbPcDcBMxz7n+9CYB0c1GxQFxYRg2jimqGw==}
+
+  '@shoojs/auth@0.2.2':
+    resolution: {integrity: sha512-9QRduq9jx8lplmMV5ZNnvZu3f4wrTSDKBcrFNPsj7iMW6W9dH0jjulKwo0vCSd8Tfpbq56vN1pyWnN6bCkWf9Q==}
+
+  '@shoojs/react@0.2.2':
+    resolution: {integrity: sha512-RUyjOi12B7CQaaXugPW7QY8Q2KyZqiTFAZV7EjYVYWcjvrO9Kg+TwDjr+Ym94P8mA/FpPRbHOd0uMROdQ5nlmw==}
+    peerDependencies:
+      react: '>=18'
+
+  '@shoojs/types@0.2.2':
+    resolution: {integrity: sha512-/3WxccmCRMy0HC03zvCCrQqUaAeDmArSCabQzveX2VHM0+S53tgDpp37z/YTHKuVsZN2rLggyuL11BjXD22WDg==}
 
   '@stylistic/eslint-plugin@5.10.0':
     resolution: {integrity: sha512-nPK52ZHvot8Ju/0A4ucSX1dcPV2/1clx0kLcH5wDmrE4naKso7TUC/voUyU1O9OTKTrR6MYip6LP0ogEMQ9jPQ==}
@@ -2893,6 +2907,18 @@ snapshots:
   '@rolldown/pluginutils@1.0.0-rc.3': {}
 
   '@rolldown/pluginutils@1.0.1': {}
+
+  '@shoojs/auth@0.2.2':
+    dependencies:
+      '@shoojs/types': 0.2.2
+
+  '@shoojs/react@0.2.2(react@19.2.6)':
+    dependencies:
+      '@shoojs/auth': 0.2.2
+      '@shoojs/types': 0.2.2
+      react: 19.2.6
+
+  '@shoojs/types@0.2.2': {}
 
   '@stylistic/eslint-plugin@5.10.0(eslint@10.3.0(jiti@2.7.0))':
     dependencies:
