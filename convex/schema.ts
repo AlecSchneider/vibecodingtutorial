@@ -9,4 +9,20 @@ export default defineSchema({
   numbers: defineTable({
     value: v.number(),
   }),
+  polls: defineTable({
+    question: v.string(),
+    slug: v.string(),
+  }).index("by_slug", ["slug"]),
+  pollOptions: defineTable({
+    pollId: v.id("polls"),
+    text: v.string(),
+  }).index("by_pollId", ["pollId"]),
+  pollVotes: defineTable({
+    pollId: v.id("polls"),
+    optionId: v.id("pollOptions"),
+    userId: v.string(),
+  })
+    .index("by_pollId", ["pollId"])
+    .index("by_pollId_and_userId", ["pollId", "userId"])
+    .index("by_optionId", ["optionId"]),
 });
