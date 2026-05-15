@@ -1,9 +1,27 @@
 @import 'tailwindcss';
 
+@theme inline {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --color-background: #0a0a0f;
+  --color-foreground: #f5f5f7;
+  --color-card: #141419;
+  --color-card-foreground: #f5f5f7;
+  --color-muted: #27272a;
+  --color-muted-foreground: #a1a1aa;
+  --color-primary: #6366f1;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #ec4899;
+  --color-secondary-foreground: #ffffff;
+  --color-accent: #22d3ee;
+  --color-accent-foreground: #0a0a0f;
+  --color-border: #27272a;
+  --radius: 0.75rem;
+}
+
 @layer base {
   html,
   body {
-    @apply text-gray-900 bg-gray-50 dark:bg-gray-950 dark:text-gray-200;
+    @apply text-foreground bg-background;
   }
 
   .using-mouse * {
