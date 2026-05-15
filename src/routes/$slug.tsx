@@ -67,7 +67,7 @@ function PollPage() {
       <div className="relative z-10 w-full sm:w-md sm:min-w-md sm:max-w-md mx-auto">
         <PollResultsCard
           question={poll.question}
-          shareUrl={`vibecodingtutoria.de/${slug}`}
+          shareUrl={`www.vibecodingtutorial.de/${slug}`}
           options={poll.options.map((option) => ({
             id: option._id,
             text: option.text,

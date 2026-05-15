@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { motion } from 'framer-motion'
 import { useState } from 'react'
-import { useMutation } from 'convex/react'
+import { useAction, useMutation } from 'convex/react'
 import { api } from '../../convex/_generated/api'
 import type { FormEvent } from 'react'
 
@@ -16,16 +16,22 @@ const initialAnswers = [
 
 function NewPoll() {
   const createPoll = useMutation(api.polls.create)
+  const generateAnswers = useAction(api.answerSuggestions.generate)
   const navigate = useNavigate()
   const [question, setQuestion] = useState('')
   const [answers, setAnswers] = useState(initialAnswers)
   const [attemptedSubmit, setAttemptedSubmit] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [generatingAnswerId, setGeneratingAnswerId] = useState<string | null>(
+    null,
+  )
+  const [generationError, setGenerationError] = useState<string | null>(null)
 
   const filledAnswerCount = answers.filter(
     (answer) => answer.value.trim().length > 0,
   ).length
-  const showQuestionError = attemptedSubmit && question.trim().length === 0
+  const hasQuestion = question.trim().length > 0
+  const showQuestionError = attemptedSubmit && !hasQuestion
   const showAnswerErrors = attemptedSubmit && filledAnswerCount < 2
 
   const addAnswer = () => {
@@ -43,11 +49,42 @@ function NewPoll() {
     )
   }
 
+  const handleGenerateAnswer = async (answerId: string) => {
+    setGenerationError(null)
+
+    if (!hasQuestion) {
+      return
+    }
+
+    setGeneratingAnswerId(answerId)
+
+    try {
+      const currentAnswers = answers
+        .map((answer) => answer.value)
+        .filter((answer) => answer.trim().length > 0)
+      const suggestions = await generateAnswers({
+        question,
+        existingAnswers: currentAnswers,
+      })
+      const suggestion = suggestions[0]
+
+      setAnswers((current) =>
+        current.map((answer) =>
+          answer.id === answerId ? { ...answer, value: suggestion } : answer,
+        ),
+      )
+    } catch {
+      setGenerationError('Could not generate an answer. Try again.')
+    } finally {
+      setGeneratingAnswerId(null)
+    }
+  }
+
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     setAttemptedSubmit(true)
 
-    if (question.trim().length === 0 || filledAnswerCount < 2) {
+    if (!hasQuestion || filledAnswerCount < 2) {
       return
     }
 
@@ -109,9 +146,10 @@ function NewPoll() {
             {answers.map((answer, index) => {
               const showAnswerError =
                 showAnswerErrors && answer.value.trim().length === 0
+              const isGeneratingThisAnswer = generatingAnswerId === answer.id
 
               return (
-              <label
+              <motion.label
                 key={answer.id}
                 className={`relative w-full rounded-xl overflow-hidden bg-muted/50 backdrop-blur-sm px-4 py-3.5 transition-all duration-200 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-card ${
                   showAnswerError
@@ -119,6 +157,25 @@ function NewPoll() {
                     : 'focus-within:ring-primary'
                 }`}
               >
+                {isGeneratingThisAnswer && (
+                  <motion.span
+                    aria-hidden="true"
+                    className="pointer-events-none absolute inset-0 rounded-xl border-2 border-primary"
+                    animate={{
+                      opacity: [0.45, 1, 0.45],
+                      boxShadow: [
+                        '0 0 0 0 rgb(99 102 241 / 0)',
+                        '0 0 0 4px rgb(99 102 241 / 0.3)',
+                        '0 0 0 0 rgb(99 102 241 / 0)',
+                      ],
+                    }}
+                    transition={{
+                      duration: 1,
+                      repeat: Infinity,
+                      ease: 'easeInOut',
+                    }}
+                  />
+                )}
                 <span className="sr-only">Answer {index + 1}</span>
                 <div className="flex items-center gap-3">
                   <span
@@ -141,16 +198,54 @@ function NewPoll() {
                         : 'placeholder:text-muted-foreground'
                     }`}
                   />
+                  {hasQuestion && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        void handleGenerateAnswer(answer.id)
+                      }}
+                      disabled={generatingAnswerId !== null}
+                      aria-label={`Generate answer ${index + 1}`}
+                      className="flex h-7 w-7 flex-none items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-card-foreground disabled:cursor-wait disabled:opacity-60"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="h-4 w-4"
+                      >
+                        <path d="M15 4V2" />
+                        <path d="M15 16v-2" />
+                        <path d="M8 9h2" />
+                        <path d="M20 9h2" />
+                        <path d="M17.8 6.2 19 5" />
+                        <path d="M17.8 11.8 19 13" />
+                        <path d="M12.2 6.2 11 5" />
+                        <path d="m3 21 9-9" />
+                        <path d="M12.2 11.8 11 13" />
+                      </svg>
+                    </button>
+                  )}
                 </div>
                 {showAnswerError && (
                   <span className="mt-2 block text-xs font-medium text-red-400">
                     Add at least 2 answers.
                   </span>
                 )}
-              </label>
+              </motion.label>
               )
             })}
           </div>
+
+          {generationError !== null && (
+            <p className="mb-3 text-center text-xs font-medium text-red-400">
+              {generationError}
+            </p>
+          )}
 
           <button
             type="button"

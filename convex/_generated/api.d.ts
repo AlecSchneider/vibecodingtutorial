@@ -8,6 +8,7 @@
  * @module
  */
 
+import type * as answerSuggestions from "../answerSuggestions.js";
 import type * as myFunctions from "../myFunctions.js";
 import type * as polls from "../polls.js";
 
@@ -18,6 +19,7 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
+  answerSuggestions: typeof answerSuggestions;
   myFunctions: typeof myFunctions;
   polls: typeof polls;
 }>;
