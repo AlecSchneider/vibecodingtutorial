@@ -5,7 +5,7 @@ import {
   Scripts,
   createRootRouteWithContext,
 } from '@tanstack/react-router'
-import { Analytics } from '@vercel/analytics/next'
+import { Analytics } from '@vercel/analytics/react'
 import * as React from 'react'
 import { useShooIdentityName } from '../shoo'
 import type { QueryClient } from '@tanstack/react-query'
