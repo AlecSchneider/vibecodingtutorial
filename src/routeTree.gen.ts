@@ -14,6 +14,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as AnotherPageRouteImport } from './routes/anotherPage'
 import { Route as SlugRouteImport } from './routes/$slug'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ShooCallbackRouteImport } from './routes/shoo.callback'
 
 const NewRoute = NewRouteImport.update({
   id: '/new',
@@ -40,6 +41,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ShooCallbackRoute = ShooCallbackRouteImport.update({
+  id: '/shoo/callback',
+  path: '/shoo/callback',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -47,6 +53,7 @@ export interface FileRoutesByFullPath {
   '/anotherPage': typeof AnotherPageRoute
   '/login': typeof LoginRoute
   '/new': typeof NewRoute
+  '/shoo/callback': typeof ShooCallbackRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -54,6 +61,7 @@ export interface FileRoutesByTo {
   '/anotherPage': typeof AnotherPageRoute
   '/login': typeof LoginRoute
   '/new': typeof NewRoute
+  '/shoo/callback': typeof ShooCallbackRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -62,13 +70,27 @@ export interface FileRoutesById {
   '/anotherPage': typeof AnotherPageRoute
   '/login': typeof LoginRoute
   '/new': typeof NewRoute
+  '/shoo/callback': typeof ShooCallbackRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/$slug' | '/anotherPage' | '/login' | '/new'
+  fullPaths:
+    | '/'
+    | '/$slug'
+    | '/anotherPage'
+    | '/login'
+    | '/new'
+    | '/shoo/callback'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/$slug' | '/anotherPage' | '/login' | '/new'
-  id: '__root__' | '/' | '/$slug' | '/anotherPage' | '/login' | '/new'
+  to: '/' | '/$slug' | '/anotherPage' | '/login' | '/new' | '/shoo/callback'
+  id:
+    | '__root__'
+    | '/'
+    | '/$slug'
+    | '/anotherPage'
+    | '/login'
+    | '/new'
+    | '/shoo/callback'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -77,6 +99,7 @@ export interface RootRouteChildren {
   AnotherPageRoute: typeof AnotherPageRoute
   LoginRoute: typeof LoginRoute
   NewRoute: typeof NewRoute
+  ShooCallbackRoute: typeof ShooCallbackRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -116,6 +139,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/shoo/callback': {
+      id: '/shoo/callback'
+      path: '/shoo/callback'
+      fullPath: '/shoo/callback'
+      preLoaderRoute: typeof ShooCallbackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -125,6 +155,7 @@ const rootRouteChildren: RootRouteChildren = {
   AnotherPageRoute: AnotherPageRoute,
   LoginRoute: LoginRoute,
   NewRoute: NewRoute,
+  ShooCallbackRoute: ShooCallbackRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

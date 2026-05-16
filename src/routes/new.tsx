@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { motion } from 'framer-motion'
 import { useState } from 'react'
-import { useAction, useMutation } from 'convex/react'
+import { useAction, useMutation, useQuery } from 'convex/react'
 import { useIsShooAuthenticated } from '../shoo'
 import { api } from '../../convex/_generated/api'
 import type { FormEvent } from 'react'
@@ -18,6 +18,8 @@ const initialAnswers = [
 function NewPoll() {
   const createPoll = useMutation(api.polls.create)
   const generateAnswers = useAction(api.answerSuggestions.generate)
+  const createAiCheckout = useAction(api.billing.createAiCheckout)
+  const hasAiAccess = useQuery(api.billing.hasAiAccess)
   const navigate = useNavigate()
   const isAuthenticated = useIsShooAuthenticated()
   const [question, setQuestion] = useState('')
@@ -62,6 +64,31 @@ function NewPoll() {
     if (!isAuthenticated) {
       setShowLoginRequired(true)
       window.setTimeout(() => setShowLoginRequired(false), 2200)
+      return
+    }
+
+    if (hasAiAccess === undefined) {
+      return
+    }
+
+    if (!hasAiAccess) {
+      setGeneratingAnswerId(answerId)
+
+      try {
+        const checkout = await createAiCheckout({
+          origin: window.location.origin,
+        })
+
+        if (checkout.url === null) {
+          throw new Error('Stripe checkout URL missing.')
+        }
+
+        window.location.href = checkout.url
+      } catch {
+        setGenerationError('Could not open checkout. Try again.')
+        setGeneratingAnswerId(null)
+      }
+
       return
     }
 

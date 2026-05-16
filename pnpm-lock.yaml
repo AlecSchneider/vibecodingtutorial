@@ -11,6 +11,9 @@ importers:
       '@convex-dev/react-query':
         specifier: ^0.1.0
         version: 0.1.0(@tanstack/react-query@5.100.10(react@19.2.6))(convex@1.38.0(react@19.2.6))
+      '@convex-dev/stripe':
+        specifier: ^0.1.4
+        version: 0.1.4(convex@1.38.0(react@19.2.6))(react@19.2.6)
       '@shoojs/react':
         specifier: ^0.2.2
         version: 0.2.2(react@19.2.6)
@@ -190,6 +193,12 @@ packages:
     peerDependencies:
       '@tanstack/react-query': ^5.0.0
       convex: ^1.29.3
+
+  '@convex-dev/stripe@0.1.4':
+    resolution: {integrity: sha512-HnINm3K2QHGvP0X4YV7KruCjQ1Ni0HE1qpJ5rZYjfdUbMcqJsX4ZYTmOo7tL83qtokS3EahKVkhXLCH/9Ms/og==}
+    peerDependencies:
+      convex: ^1.29.3
+      react: ^18.3.1 || ^19.0.0
 
   '@emnapi/core@1.10.0':
     resolution: {integrity: sha512-yq6OkJ4p82CAfPl0u9mQebQHKPJkY7WrIuk205cTYnYe+k2Z8YBh11FrbRG/H6ihirqcacOgl2BIO8oyMQLeXw==}
@@ -2111,6 +2120,15 @@ packages:
     resolution: {integrity: sha512-o3yWv49B/o4QZk5ZcsALc6t0+eCelPc44zZsLtCQnZPDwFpDYSWcDnrv2TtMmMbQ7uKo3J0HTURCqckw23czNQ==}
     engines: {node: '>=12.0.0'}
 
+  stripe@20.4.1:
+    resolution: {integrity: sha512-axCguHItc8Sxt0HC6aSkdVRPffjYPV7EQqZRb2GkIa8FzWDycE7nHJM19C6xAIynH1Qp1/BHiopSi96jGBxT0w==}
+    engines: {node: '>=16'}
+    peerDependencies:
+      '@types/node': '>=16'
+    peerDependenciesMeta:
+      '@types/node':
+        optional: true
+
   tailwindcss@4.3.0:
     resolution: {integrity: sha512-y6nxMGB1nMW9R6k96e5gdIFzcfL/gTJRNaqGes1YvkLnPVXzWgbqFF2yLC0T8G774n24cx3Pe8XrKoniCOAH+Q==}
 
@@ -2524,6 +2542,14 @@ snapshots:
     dependencies:
       '@tanstack/react-query': 5.100.10(react@19.2.6)
       convex: 1.38.0(react@19.2.6)
+
+  '@convex-dev/stripe@0.1.4(convex@1.38.0(react@19.2.6))(react@19.2.6)':
+    dependencies:
+      convex: 1.38.0(react@19.2.6)
+      react: 19.2.6
+      stripe: 20.4.1
+    transitivePeerDependencies:
+      - '@types/node'
 
   '@emnapi/core@1.10.0':
     dependencies:
@@ -4274,6 +4300,8 @@ snapshots:
   srvx@0.11.15: {}
 
   stable-hash-x@0.2.0: {}
+
+  stripe@20.4.1: {}
 
   tailwindcss@4.3.0: {}
 

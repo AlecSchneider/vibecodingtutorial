@@ -5,7 +5,7 @@ export default {
       issuer: "https://shoo.dev",
       jwks: "https://shoo.dev/.well-known/jwks.json",
       algorithm: "ES256",
-      applicationID: "origin:https://www.vibecodingtutorial.de",
+      applicationID: "origin:http://localhost:3000",
     },
   ],
 };

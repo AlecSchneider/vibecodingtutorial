@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@convex-dev/react-query": "^0.1.0",
+    "@convex-dev/stripe": "^0.1.4",
     "@shoojs/react": "^0.2.2",
     "@tanstack/react-query": "^5.99.0",
     "@tanstack/react-router": "^1.168.22",

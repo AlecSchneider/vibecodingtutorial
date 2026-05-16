@@ -9,6 +9,8 @@
  */
 
 import type * as answerSuggestions from "../answerSuggestions.js";
+import type * as billing from "../billing.js";
+import type * as http from "../http.js";
 import type * as myFunctions from "../myFunctions.js";
 import type * as polls from "../polls.js";
 import type * as users from "../users.js";
@@ -21,6 +23,8 @@ import type {
 
 declare const fullApi: ApiFromModules<{
   answerSuggestions: typeof answerSuggestions;
+  billing: typeof billing;
+  http: typeof http;
   myFunctions: typeof myFunctions;
   polls: typeof polls;
   users: typeof users;
@@ -52,4 +56,6 @@ export declare const internal: FilterApi<
   FunctionReference<any, "internal">
 >;
 
-export declare const components: {};
+export declare const components: {
+  stripe: import("@convex-dev/stripe/_generated/component.js").ComponentApi<"stripe">;
+};
