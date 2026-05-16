@@ -7,7 +7,10 @@ import {
 } from '@tanstack/react-router'
 import { Analytics } from '@vercel/analytics/react'
 import * as React from 'react'
+import { motion } from 'framer-motion'
+import { useQuery } from 'convex/react'
 import { useShooIdentityName } from '../shoo'
+import { api } from '../../convex/_generated/api'
 import type { QueryClient } from '@tanstack/react-query'
 import appCss from '~/styles/app.css?url'
 
@@ -56,14 +59,25 @@ export const Route = createRootRouteWithContext<{
 
 function RootComponent() {
   const viewerName = useShooIdentityName()
+  const hasAiAccess = useQuery(api.billing.hasAiAccess)
 
   return (
     <RootDocument>
       <Link
         to="/login"
-        className="fixed top-4 right-4 z-50 max-w-40 truncate rounded-lg bg-muted px-3 py-2 text-xs font-semibold text-card-foreground shadow-lg transition-colors hover:bg-muted/80"
+        className="fixed top-4 right-4 z-50 flex max-w-52 items-center gap-2 rounded-lg bg-muted px-3 py-2 text-xs font-semibold text-card-foreground shadow-lg transition-colors hover:bg-muted/80"
       >
-        {viewerName ?? 'Log in'}
+        <span className="truncate">{viewerName ?? 'Log in'}</span>
+        {hasAiAccess === true && (
+          <motion.span
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: [0.55, 1, 0.55], scale: 1 }}
+            transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+            className="rounded-md bg-primary/20 px-1.5 py-0.5 text-[10px] font-bold text-primary"
+          >
+            PRO
+          </motion.span>
+        )}
       </Link>
       <Outlet />
     </RootDocument>
