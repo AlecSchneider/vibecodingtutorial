@@ -18,6 +18,7 @@ export const Route = createRootRouteWithContext<{
   queryClient: QueryClient
 }>()({
   head: () => ({
+    title: 'Vibe Coded Polls',
     meta: [
       {
         charSet: 'utf-8',
@@ -27,29 +28,61 @@ export const Route = createRootRouteWithContext<{
         content: 'width=device-width, initial-scale=1',
       },
       {
-        title: 'TanStack Start Starter',
+        title: 'Vibe Coded Polls',
+      },
+      {
+        name: 'description',
+        content:
+          'Vibe Coded Polls is a sample poll website built in vibe coding tutorials, featuring shareable polls, AI answer generation, Google login, Stripe payments, and live Convex results.',
+      },
+      {
+        name: 'keywords',
+        content:
+          'vibe coding tutorials, vibe coded polls, poll website tutorial, Convex tutorial, TanStack Start poll app, AI poll generator',
+      },
+      {
+        property: 'og:title',
+        content: 'Vibe Coded Polls',
+      },
+      {
+        property: 'og:description',
+        content:
+          'A sample poll website built during vibe coding tutorials with shareable polls, AI features, auth, payments, and live results.',
+      },
+      {
+        property: 'og:type',
+        content: 'website',
+      },
+      {
+        property: 'og:url',
+        content: 'https://www.vibecodingtutorial.de',
+      },
+      {
+        name: 'twitter:card',
+        content: 'summary',
+      },
+      {
+        name: 'twitter:title',
+        content: 'Vibe Coded Polls',
+      },
+      {
+        name: 'twitter:description',
+        content:
+          'A vibe coding tutorial project for building a modern poll website.',
       },
     ],
     links: [
       { rel: 'stylesheet', href: appCss },
       {
-        rel: 'apple-touch-icon',
-        sizes: '180x180',
-        href: '/apple-touch-icon.png',
-      },
-      {
         rel: 'icon',
         type: 'image/svg+xml',
-        href: '/favicon.svg',
+        href: '/favicon.svg?v=2',
       },
       {
-        rel: 'icon',
-        type: 'image/png',
-        sizes: '32x32',
-        href: '/favicon-32x32.png',
+        rel: 'shortcut icon',
+        href: '/favicon.svg?v=2',
       },
       { rel: 'manifest', href: '/site.webmanifest', color: '#fffff' },
-      { rel: 'icon', href: '/favicon.ico' },
     ],
   }),
   notFoundComponent: () => <div>Route not found</div>,
@@ -91,6 +124,16 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         {children}
+        <footer className="fixed bottom-4 left-1/2 z-40 -translate-x-1/2 text-center text-xs font-medium text-muted-foreground">
+          <a
+            href="https://github.com/AlecSchneider/vibecodingtutorial"
+            target="_blank"
+            rel="noreferrer"
+            className="transition-colors hover:text-card-foreground"
+          >
+            Check out the Code on Github
+          </a>
+        </footer>
         <Analytics />
         <Scripts />
       </body>
