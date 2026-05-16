@@ -25,4 +25,8 @@ export default defineSchema({
     .index("by_pollId", ["pollId"])
     .index("by_pollId_and_userId", ["pollId", "userId"])
     .index("by_optionId", ["optionId"]),
+  userStripeCustomers: defineTable({
+    userId: v.string(),
+    stripeCustomerId: v.string(),
+  }).index("by_userId", ["userId"]),
 });
