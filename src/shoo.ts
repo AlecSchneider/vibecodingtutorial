@@ -9,9 +9,11 @@ const redirectUri =
   (import.meta.env.DEV
     ? 'http://localhost:3000/shoo/callback'
     : 'https://www.vibecodingtutorial.de/shoo/callback')
+const clientId = 'origin:https://www.vibecodingtutorial.de'
 
 const shooAuth = createShooConvexAuth({
   callbackPath: '/shoo/callback',
+  clientId,
   redirectUri,
 })
 
@@ -33,6 +35,7 @@ export function useAuth() {
 export function useShooIdentityName() {
   const { identity } = useShooAuth({
     callbackPath: '/shoo/callback',
+    clientId,
     redirectUri,
   })
 
