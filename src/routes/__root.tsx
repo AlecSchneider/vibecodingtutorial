@@ -124,7 +124,15 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         {children}
-        <footer className="fixed bottom-4 left-1/2 z-40 -translate-x-1/2 text-center text-xs font-medium text-muted-foreground">
+        <footer className="fixed bottom-4 left-1/2 z-40 flex -translate-x-1/2 flex-col items-center gap-1 text-center text-xs font-medium text-muted-foreground">
+          <a
+            href="https://www.youtube.com/watch?v=Y_NrWcWSqGQ"
+            target="_blank"
+            rel="noreferrer"
+            className="transition-colors hover:text-card-foreground"
+          >
+            Watch how this was build on Youtube
+          </a>
           <a
             href="https://github.com/AlecSchneider/vibecodingtutorial"
             target="_blank"
