@@ -131,7 +131,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
             rel="noreferrer"
             className="transition-colors hover:text-card-foreground"
           >
-            Watch how this was build on Youtube
+            Watch how this was built on Youtube
           </a>
           <a
             href="https://github.com/AlecSchneider/vibecodingtutorial"
